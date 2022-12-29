@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CloudBag</title>
+    <link rel="stylesheet" href="/css/login.css">
+
+
+</head>
+<body>
+<div class="center">
+    <h1>CloudBag <img src="/logo.png" width="10%"/></h1>
+    <form id="LoginForm" method="post" action="/Login">
+        <div class="txt_field">
+            <input type="text" required>
+            <span></span>
+            <label>Username</label>
+        </div>
+        <div class="txt_field">
+            <input  type="password" name="Password" id="Password"  required>
+            <span></span>
+            <label>Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+        <input type="submit" value="Login">
+        <div class="signup_link">
+            Not a member? <a href="#">Signup</a>
+        </div>
+    </form>
+</div>
+<script src="../../public/js/login.js"></script>
+</body>
+</html>
