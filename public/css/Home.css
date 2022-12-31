@@ -9,26 +9,24 @@ html{
 
 #SelectFromDiv{
     display: flex;
+    justify-content: center;
 }
 
 .SelectFrom{
-    width: 100%;
+    width: 40%;
     margin: 25px;
     border-radius: 15px;
     padding: 10px;
 }
 
-#SendFilesFromPhone{
+
+
+#GetFilesFromPC{
     background-color: #45b367;
 }
 
-
 #SendFilesFromPC{
-    background-color: #FFB367;
-}
-
-#GetFilesFromPC{
-    background-color: #8CDDFF;
+    background-color: #166abe;
 }
 
 .SelectFromLinks{
@@ -43,44 +41,20 @@ html{
     width: 100%;
 }
 
-#Arrow11{
-    transform: translate(478px, 298px) rotate(0deg);
-    animation: linear Rotate1 2s infinite;
-}
 
-#Arrow21{
+
+#Arrow{
     transform: translate(478px, 297px) rotate(0deg);
     animation: linear Rotate2 2s infinite;
     animation-delay: -1s;
 }
 
-#Arrow2{
-    transform: translate(478px, 294.111px) rotate(0deg);
-    animation: linear Rotate3 1s infinite;
-}
 
-#Arrow3{
-    transform: translate(478px, 298px) rotate(0deg);
-    animation: linear Rotate3 1s infinite;
-}
 
-#Arrow11_2{transform: translate(-478px, -298px);}
 
-#Arrow21_2{transform: translate(-478px, -297px);}
+#ArrowAction{transform: translate(-478px, -297px);}
 
-#Arrow2_2{transform: translate(-478px, -294.111px);}
 
-#Arrow3_2{transform: translate(-478px, -298px);}
-
-@keyframes Rotate1{
-
-    from{
-        transform: translate(478px, 298px) rotate(130deg);
-    }
-    to{
-        transform: translate(478px, 298px) rotate(-30deg);
-    }
-}
 
 @keyframes Rotate2 {
     from{
@@ -91,14 +65,7 @@ html{
     }
 }
 
-@keyframes Rotate3 {
-    from{
-        transform: translate(478px, 294.111px) rotate(-20deg);
-    }
-    to{
-        transform: translate(478px, 294.111px) rotate(50deg);
-    }
-}
+
 
 @media only screen and (max-aspect-ratio: 2/3){
     #SelectFromDiv {
