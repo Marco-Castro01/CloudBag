@@ -8,11 +8,15 @@ const ejs = require('ejs')
 const parser = require("body-parser");
 const formidable = require('formidable');
 const colors = require('colors');
-
+const users=require("./public/js/login");
 const CloudBagLoc = path.join(os.homedir(), 'CloudBag');
 console.log(CloudBagLoc);
 const port = 3000;
-
+let userData={
+    NickName:null,
+    password:null,
+    rango:null
+};
 let LoggedIn;
 let UserWish;
 
@@ -37,7 +41,7 @@ function StartUp() {
         fs.mkdir(path.join(CloudBagLoc, 'CloudBag'), ()=>{})
 
     if (!fs.existsSync(path.join(CloudBagLoc, 'Password.psw')))
-        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'admin')
+        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'hola;admin;creador/probando;prueba;usuario/Marco;mark;administrador')
 
     while (true) {
         UserWish = parseInt(readline.question("Please enter 1 or 2: "));
@@ -96,7 +100,7 @@ function StartServer(){
 
     const app = express();
 
-    let password = fs.readFileSync(path.join(CloudBagLoc, "Password.psw"));
+    let password; //= fs.readFileSync(path.join(CloudBagLoc, "Password.psw"));
     let isPasswordIncorrect = 0;
     let clients = [];
     LoggedIn = {};
@@ -117,7 +121,7 @@ function StartServer(){
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
 
-        if (LoggedIn[clientIp]){
+        if (LoggedIn[clientIp] && userData.NickName!=null && userData.password!=null){
             res.render(path.join(__dirname ,'/views/pages/Home'))
         }else {
             res.redirect('/Login')
@@ -128,8 +132,7 @@ function StartServer(){
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
-
-        if (LoggedIn[clientIp]){
+        if (LoggedIn[clientIp] && userData.NickName!=null && userData.password!=null){
             res.redirect('/')
         }else {
             res.render(path.join(__dirname ,'/views/pages/login'))
@@ -141,7 +144,7 @@ function StartServer(){
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
 
-        if (LoggedIn) {
+        if (LoggedIn[clientIp]  && userData.NickName!=null && userData.password!=null ) {
             let CloudBagFiles = walk(path.join(CloudBagLoc, 'CloudBag'))
             res.render(path.join(__dirname ,'/views/pages/GetFromPC'), {
                 CloudBagFiles: CloudBagFiles,
@@ -151,24 +154,13 @@ function StartServer(){
         }
     })
 
-    app.get("/SendFromPhone", (req, res)=>{
-        let clientIp = CheckClient(req, clients, LoggedIn)[0]
-        clients = CheckClient(req, clients, LoggedIn)[1]
-        LoggedIn = CheckClient(req, clients, LoggedIn)[2]
-
-        if (LoggedIn) {
-            res.render(path.join(__dirname ,'/views/pages/SendFromPhone'))
-        }else{
-            res.redirect('/Login')
-        }
-    })
 
     app.get("/SendToCloudBag", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
 
-        if (LoggedIn) {
+        if (LoggedIn[clientIp]  && userData.NickName!=null && userData.password!=null ) {
             res.render(path.join(__dirname ,'/views/pages/SendToCloudBag'))
         }else{
             res.redirect('/Login')
@@ -189,9 +181,12 @@ function StartServer(){
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
-
-        let EnteredPassword = req.body.Password
-        if (password == EnteredPassword){
+        let nickName=req.body.nickName;
+        let EnteredPassword = req.body.Password;
+        validateUser(nickName,EnteredPassword);
+        console.log("probando")
+        if (userData.NickName!=null && userData.password!=null && userData.rango!=null ){
+            console.log("probando2")
             isPasswordIncorrect = false;
             LoggedIn[clientIp] = true;
             res.redirect('/')
@@ -202,13 +197,7 @@ function StartServer(){
 
     })
 
-    app.post("/isPasswordIncorrect", (req, res)=>{
-        let isPasswordIncorrectDict = {};
-        isPasswordIncorrectDict["isPasswordIncorrect"] = isPasswordIncorrect;
-        let isPasswordIncorrectJSON = JSON.stringify(isPasswordIncorrectDict);
 
-        res.json(isPasswordIncorrectJSON);
-    })
 
      app.post("/SendData", (req, res, next)=>{
         const form = formidable();
@@ -302,13 +291,29 @@ function StartServer(){
 
 // CUSTOM FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function validateUser(nick,pass){
+    users.extractUsers().forEach(
+        (user)=>{
+            if((user.split(";")[0]==nick) && (user.split(";")[1]==pass)){
+                userData.NickName=nick;
+                userData.password=pass;
+                userData.rango=user.split(";")[2]
+
+                console.log(user)
+
+            }
+
+        }
+
+    )
+}
 function CheckClient(request, clients, isLoggedIn){
     let clientIp = request.ip;
 
     if (!clients.includes(clientIp)) {
         clients.push(clientIp)
         isLoggedIn[clientIp] = false
-    }
+    };
 
     return [clientIp, clients, isLoggedIn]
 }

@@ -1,11 +1,10 @@
-fetch("/isPasswordIncorrect", {
-    method: 'POST'
-})
-    .then(response => response.json())
-    .then(passwordIsIncorrect => {
-        console.log(passwordIsIncorrect);
-        passwordIsIncorrect = JSON.parse(passwordIsIncorrect)
-        if (passwordIsIncorrect["isPasswordIncorrect"]){
-            document.getElementById("PasswordIncorrectDiv").style.display = "flex";
-        }
-    });v
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
+let CloudBagLoc=path.join(os.homedir(), 'CloudBag');
+exports.extractUsers=()=>{
+    let usuarios=fs.readFileSync(path.join(CloudBagLoc, "Password.psw")).toString()
+
+    return usuarios.split("/")
+}
+
