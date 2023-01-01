@@ -10,6 +10,7 @@ const formidable = require('formidable');
 const colors = require('colors');
 const users=require("./public/js/login");
 const CloudBagLoc = path.join(os.homedir(), 'CloudBag');
+
 console.log(CloudBagLoc);
 const port = 3000;
 let userData={
@@ -41,7 +42,10 @@ function StartUp() {
         fs.mkdir(path.join(CloudBagLoc, 'CloudBag'), ()=>{})
 
     if (!fs.existsSync(path.join(CloudBagLoc, 'Password.psw')))
-        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'hola;admin;creador/probando;prueba;usuario/Marco;mark;administrador')
+        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'admin;admin;superUser/ge;ge;admin')
+
+    if (!fs.existsSync(path.join(CloudBagLoc, 'Sesions.psw')))
+        fs.writeFileSync(path.join(CloudBagLoc, 'Sesions.psw'), '')
 
     while (true) {
         UserWish = parseInt(readline.question("Please enter 1 or 2: "));
@@ -94,28 +98,21 @@ function Reset(){
     console.clear()
     StartUp()
 }
-
 function StartServer(){
     const saveLocation = CloudBagLoc
-
     const app = express();
-
     let password; //= fs.readFileSync(path.join(CloudBagLoc, "Password.psw"));
     let isPasswordIncorrect = 0;
     let clients = [];
     LoggedIn = {};
     let ip_address;
-
     app.use(express.static(path.join(__dirname ,'/public')))
     app.use(express.static(path.join(__dirname ,'/SVGs')))
     app.use(express.static(path.join(__dirname ,'/views')))
     app.use(express.static(path.join(CloudBagLoc, 'CloudBag')))
     app.use(parser.urlencoded({ extended: false }))
-
     app.set('view engine', 'ejs')
-
     // GET /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     app.get("/", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
@@ -127,7 +124,6 @@ function StartServer(){
             res.redirect('/Login')
         }
     })
-
     app.get("/Login", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
@@ -138,7 +134,6 @@ function StartServer(){
             res.render(path.join(__dirname ,'/views/pages/login'))
         }
     })
-
     app.get("/GetFromPC", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
@@ -153,8 +148,6 @@ function StartServer(){
             res.redirect('/Login')
         }
     })
-
-
     app.get("/SendToCloudBag", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
@@ -166,17 +159,14 @@ function StartServer(){
             res.redirect('/Login')
         }
     })
-
     app.get('/Logout', (req, res)=>{
 
         let clientIp = req.ip;
         LoggedIn[clientIp] = false;
 
         res.redirect('/')
-    })
-
+    });
     // POST ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     app.post("/Login", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
@@ -184,9 +174,10 @@ function StartServer(){
         let nickName=req.body.nickName;
         let EnteredPassword = req.body.Password;
         validateUser(nickName,EnteredPassword);
-        console.log("probando")
         if (userData.NickName!=null && userData.password!=null && userData.rango!=null ){
-            console.log("probando2")
+
+            users.registSesion(userData.NickName)
+            console.log(users.extractSesions())
             isPasswordIncorrect = false;
             LoggedIn[clientIp] = true;
             res.redirect('/')
@@ -194,29 +185,20 @@ function StartServer(){
             res.redirect('/Login')
             isPasswordIncorrect = true;
         }
-
     })
-
-
-
      app.post("/SendData", (req, res, next)=>{
         const form = formidable();
-
         form.parse(req, (err, fields, files) => {
             if (err) {
                 next(err);
                 return;
             }
-
             fs.mkdir(path.join(saveLocation, fields.BatchName), ()=>{})
-
             console.log("\nFiles saved at:")
-
             let fileCounter=0;
             for(let file in files){
                 fileCounter++
             }
-
             let fileCounter2=0;
             for (let file in files){
                 fileCounter2++
@@ -290,7 +272,6 @@ function StartServer(){
 }
 
 // CUSTOM FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function validateUser(nick,pass){
     users.extractUsers().forEach(
         (user)=>{
@@ -298,9 +279,6 @@ function validateUser(nick,pass){
                 userData.NickName=nick;
                 userData.password=pass;
                 userData.rango=user.split(";")[2]
-
-                console.log(user)
-
             }
 
         }
