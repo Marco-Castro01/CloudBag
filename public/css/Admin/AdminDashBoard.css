@@ -4,7 +4,7 @@
 }
 
 html{
-    background-color: #ffffff;
+    background-color: #F1EDFF;
 }
 
 #SelectFromDiv{
@@ -21,14 +21,20 @@ html{
 
 
 
-#Reportes{
-    background-color: #45b367;
+#GetFilesFromPC{
+    background-color: #b3a445;
 }
 
+#SendFilesFromPC{
+    background-color: #be1616;
+}
+#AdminDashBoard{
+    background-color: #a24eee;
+
+}
 #CrudUsers{
-    background-color: #166abe;
+    background-color: #0087fd;
 }
-
 
 .SelectFromLinks{
     text-decoration: none;
@@ -41,4 +47,7 @@ html{
 .SelectFromLinks > svg{
     width: 100%;
 }
+
+
+
 

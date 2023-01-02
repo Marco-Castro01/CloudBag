@@ -128,7 +128,6 @@ function StartServer(){
                     break;
 
             }
-            res.render(path.join(__dirname ,'/views/pages/User/HomeUser'))
         }else {
             res.redirect('/Login')
         }
@@ -180,6 +179,7 @@ function StartServer(){
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
         clients = CheckClient(req, clients, LoggedIn)[1]
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
+        console.log("Si llama")
 
         if (LoggedIn[clientIp]  && userData.NickName!=null && userData.password!=null && userData.rango=="admin" ) {
             res.render(path.join(__dirname ,'/views/pages/Admin/AdminDashBoard'))
