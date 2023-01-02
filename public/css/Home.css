@@ -28,6 +28,13 @@ html{
 #SendFilesFromPC{
     background-color: #166abe;
 }
+#AdminDashBoard{
+    background-color: #a24eee;
+
+}
+#CrudUsers{
+    background-color: #166abe;
+}
 
 .SelectFromLinks{
     text-decoration: none;

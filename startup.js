@@ -42,7 +42,7 @@ function StartUp() {
         fs.mkdir(path.join(CloudBagLoc, 'CloudBag'), ()=>{})
 
     if (!fs.existsSync(path.join(CloudBagLoc, 'Password.psw')))
-        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'admin;admin;superUser/ge;ge;admin')
+        fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'), 'admin;admin;admin/ge;ge;admin')
 
     if (!fs.existsSync(path.join(CloudBagLoc, 'Sesions.psw')))
         fs.writeFileSync(path.join(CloudBagLoc, 'Sesions.psw'), '')
@@ -119,7 +119,16 @@ function StartServer(){
         LoggedIn = CheckClient(req, clients, LoggedIn)[2]
 
         if (LoggedIn[clientIp] && userData.NickName!=null && userData.password!=null){
-            res.render(path.join(__dirname ,'/views/pages/Home'))
+            switch (userData.rango) {
+                case "admin":
+                    res.render(path.join(__dirname ,'/views/pages/Admin/HomeAdmin'))
+                    break;
+                case "user":
+                    res.render(path.join(__dirname ,'/views/pages/User/HomeUser'))
+                    break;
+
+            }
+            res.render(path.join(__dirname ,'/views/pages/User/HomeUser'))
         }else {
             res.redirect('/Login')
         }
@@ -166,6 +175,19 @@ function StartServer(){
 
         res.redirect('/')
     });
+
+    app.get("/AdminDashBoard", (req,res)=>{
+        let clientIp = CheckClient(req, clients, LoggedIn)[0]
+        clients = CheckClient(req, clients, LoggedIn)[1]
+        LoggedIn = CheckClient(req, clients, LoggedIn)[2]
+
+        if (LoggedIn[clientIp]  && userData.NickName!=null && userData.password!=null && userData.rango=="admin" ) {
+            res.render(path.join(__dirname ,'/views/pages/Admin/AdminDashBoard'))
+        }else{
+            res.redirect('/')
+        }
+
+    })
     // POST ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     app.post("/Login", (req, res)=>{
         let clientIp = CheckClient(req, clients, LoggedIn)[0]
@@ -186,7 +208,7 @@ function StartServer(){
             isPasswordIncorrect = true;
         }
     })
-     app.post("/SendData", (req, res, next)=>{
+    app.post("/SendData", (req, res, next)=>{
         const form = formidable();
         form.parse(req, (err, fields, files) => {
             if (err) {

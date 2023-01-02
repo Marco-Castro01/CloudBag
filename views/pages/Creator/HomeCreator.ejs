@@ -1,15 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>CloudBag - Almacena esta ⠀⠀⠀⠀⠀⠀⠀⠀ información</title>
+    <title>CloudBag - Almacena esta información</title>
     <link rel="stylesheet" href="./css/Home.css">
-    <%- include('../partials/_header') %>
+    <%- include('../../partials/_header') %>
 </head>
 <body>
-<%- include('../partials/_navbar') %>
+<%- include('../../partials/_navbar') %>
 
 <main>
     <div id="SelectFromDiv">
+        <div id="AdminActions" class="SelectFrom">
+            <a href="/AdminActions" class="SelectFromLinks">
+                SEND FILES FROM THE SERVER PC TO CloudBag
+
+                <svg width="791" viewBox="0 0 791 523" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <rect width="791" height="523" fill="#166abe"/>
+                    <rect id="pc-to-CloudBag-transfer" width="791" height="469" fill="url(#pattern2)"/>
+
+                    <g id="Arrow">
+                        <circle id="Ellipse 21" cx="0" cy="0" r="225" fill="#C4C4C4" fill-opacity="0.01"/>
+                        <path id="ArrowAction" d="M597.531 106.56L613.362 140.809L635.067 110.394L597.531 106.56Z" fill="white"/>
+                    </g>
+                    <g id="CloudBag3">
+                        <line id="CenterDownn1" x1="454.033" y1="123.5" x2="518.033" y2="123.5" stroke="#FF8000" stroke-width="3"/>
+                        <line id="CenterDown1" x1="434.033" y1="101.5" x2="539.033" y2="101.5" stroke="#FF8000" stroke-width="3"/>
+                        <line id="CenterLine1" x1="427" y1="73.5" x2="547.067" y2="73.5" stroke="#FF8000" stroke-width="3"/>
+                        <line id="CenterUp1" x1="434.033" y1="45.5" x2="539.038" y2="45.5" stroke="#FF8000" stroke-width="3"/>
+                        <line id="CenterUpp1" x1="454.029" y1="25.5" x2="518.029" y2="25.5" stroke="#FF8000" stroke-width="3"/>
+                        <circle id="Circle1" cx="487.033" cy="74" r="58.5" fill="white" fill-opacity="0.47" stroke="#FF8000" stroke-width="3"/>
+                    </g>
+                    <defs>
+                        <pattern id="pattern2" patternContentUnits="objectBoundingBox" width="1" height="1">
+                            <use xlink:href="#image0_0_3" transform="scale(0.00126422 0.0021322)"/>
+                        </pattern>
+                        <image id="image0_0_3" data-name="CloudBag-to-phone-transfer.png" width="791" height="469" href="/Images/CloudBag-to-phone-transfer.png"/>
+                    </defs>
+                </svg>
+                <p>Send Files/Photos from any Device (including Server PC) to the CloudBag. CloudBag is a shared space for all the devices on your local Network. Any device which is logged in with server password can access files saved in CloudBag.</p>
+            </a>
+        </div>
         <div id="SendFilesFromPC" class="SelectFrom">
             <a href="/SendToCloudBag" class="SelectFromLinks">
                 SEND FILES FROM THE SERVER PC TO CloudBag
@@ -69,8 +99,7 @@
 
             </a>
         </div>
-
     </div>
-
+</main>
 </body>
 </html>

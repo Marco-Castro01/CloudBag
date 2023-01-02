@@ -1,0 +1,44 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    background-color: #ffffff;
+}
+
+#SelectFromDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.SelectFrom{
+    width: 40%;
+    margin: 25px;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+
+
+#Reportes{
+    background-color: #45b367;
+}
+
+#CrudUsers{
+    background-color: #166abe;
+}
+
+
+.SelectFromLinks{
+    text-decoration: none;
+    color: white;
+    font-family: "Oswald", sans-serif;
+    font-size: 1.15vw;
+    padding: 15px;
+}
+
+.SelectFromLinks > svg{
+    width: 100%;
+}
+
